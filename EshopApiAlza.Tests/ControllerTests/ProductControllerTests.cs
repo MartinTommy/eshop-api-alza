@@ -19,9 +19,11 @@ namespace EshopApiAlza.Tests.ControllerTests
             if (!await databaseContext.Products.AnyAsync())
             {
                 databaseContext.Products.AddRange(
-                    new Product { Id = 1, Name = "Product 1", ImgUri = "https://example.com/img1.jpg", Price = 29.99m, Description = "First product" },
-                    new Product { Id = 2, Name = "Product 2", ImgUri = "https://example.com/img2.jpg", Price = 49.99m, Description = "Second product" }
-                );
+                   new Product { Id = 1, Name = "Product 1", ImgUri = "https://example.com/img1.jpg", Price = 29.99m, Description = "First product" },
+                   new Product { Id = 2, Name = "Product 2", ImgUri = "https://example.com/img2.jpg", Price = 49.99m, Description = "Second product" },
+                   new Product { Id = 3, Name = "Product 3", ImgUri = "https://example.com/img3.jpg", Price = 19.99m, Description = "Third product" },
+                   new Product { Id = 4, Name = "Product 4", ImgUri = "https://example.com/img4.jpg", Price = 39.99m, Description = "Fourth product" }
+               );
                 await databaseContext.SaveChangesAsync();
             }
             return databaseContext;

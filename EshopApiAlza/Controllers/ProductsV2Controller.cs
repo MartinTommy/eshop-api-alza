@@ -18,7 +18,7 @@ namespace EshopApiAlza.Controllers
 
         // GET: api/v2/products?page=1&size=10
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery] int page = 1, [FromQuery] int size = 10)
+        public async Task<ActionResult<PaginatedResponse<Product>>> GetProducts([FromQuery] int page = 1, [FromQuery] int size = 10)
         {
             if (page <= 0 || size <= 0)
             {
@@ -38,14 +38,13 @@ namespace EshopApiAlza.Controllers
                 .Take(size)               // Take only the required number of records
                 .ToListAsync();
 
-            var response = new
-            {
-                TotalProducts = totalProducts,
-                TotalPages = totalPages,
-                CurrentPage = page,
-                PageSize = size,
-                Data = products
-            };
+            var response = new PaginatedResponse<Product>(
+                totalProducts: totalProducts,
+                totalPages: totalPages,
+                currentPage: page,
+                pageSize: size,
+                data: products
+            );
 
             return Ok(response);
         }
