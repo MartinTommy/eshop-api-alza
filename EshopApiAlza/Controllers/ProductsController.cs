@@ -16,13 +16,28 @@ namespace EshopApiAlza.Controllers
             _context = context;
         }
 
+        // GET: api/products 
+        /// <summary>
+        /// Retrieves a list of all products.
+        /// </summary>
+        /// <returns>A list of products.</returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
             return await _context.Products.ToListAsync();
         }
 
+        // PATCH: api/products/{id}/description
+        /// <summary>
+        /// Updates description of a specific product selected by its id.
+        /// </summary>
+        /// <param name="id">The ID of the product to update.</param>
+        /// <param name="newDescription">The string to be updated into products description.</param>
         [HttpPatch("{id}/description")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateProductDescription(int id, [FromBody] string newDescription)
         {
             var product = await _context.Products.FindAsync(id);
@@ -38,7 +53,15 @@ namespace EshopApiAlza.Controllers
             return NoContent();  // 204 No Content
         }
 
+        // GET: api/products/{id}
+        /// <summary>
+        /// Retrieves a product by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the product to retrieve.</param>
+        /// <returns>The product with the specified ID.</returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
             var product = await _context.Products.FindAsync(id);

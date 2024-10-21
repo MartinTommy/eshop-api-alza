@@ -17,7 +17,16 @@ namespace EshopApiAlza.Controllers
         }
 
         // GET: api/v2/products?page=1&size=10
+        /// <summary>
+        /// Retrieves a list of products on a specific page divided into pages depending on page size.
+        /// </summary>
+        /// <param name="page"> Number of page to display. </param>
+        /// <param name="size"> Size of a one page. </param>
+        /// <returns> List of products on specific page</returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<PaginatedResponse<Product>>> GetProducts([FromQuery] int page = 1, [FromQuery] int size = 10)
         {
             if (page <= 0 || size <= 0)
