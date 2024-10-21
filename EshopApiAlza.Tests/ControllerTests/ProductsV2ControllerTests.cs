@@ -14,8 +14,11 @@ namespace EshopApiAlza.Tests.ControllerTests
 
         public ProductsV2ControllerTests()
         {
+            var baseDirectory = Directory.GetParent(AppContext.BaseDirectory)?.FullName
+            ?? throw new InvalidOperationException("Unable to determine the parent directory.");
+
             Configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+                .SetBasePath(baseDirectory)
                 .AddJsonFile("appsettings.json", optional: false)
                 .AddEnvironmentVariables()
                 .Build();
