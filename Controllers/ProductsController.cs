@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using EshopApi.Models;
-using EshopApi.Data;
+using EshopApiAlza.Models;
+using EshopApiAlza.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace EshopApiAlza.Controllers
