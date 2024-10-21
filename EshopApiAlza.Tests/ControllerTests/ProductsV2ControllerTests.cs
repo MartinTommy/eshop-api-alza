@@ -9,18 +9,22 @@ namespace EshopApiAlza.Tests.ControllerTests
 {
     public class ProductsV2ControllerTests
     {
-        private IConfiguration Configuration { get; set; }
-        private bool UseMockData { get; set; }
+        private IConfiguration Configuration { get; }
+        private bool UseMockData { get; }
 
-        private async Task<AppDbContext> GetDatabaseContext()
+        public ProductsV2ControllerTests()
         {
-            Configuration = new ConfigurationBuilder().SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-                .AddJsonFile("appsettings.json", false)
+            Configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+                .AddJsonFile("appsettings.json", optional: false)
                 .AddEnvironmentVariables()
                 .Build();
 
             UseMockData = Configuration.GetValue<bool>("UseMockData");
+        }
 
+        private async Task<AppDbContext> GetDatabaseContext()
+        {
             AppDbContext databaseContext;
 
             if (UseMockData)
