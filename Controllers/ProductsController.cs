@@ -21,5 +21,21 @@ namespace EshopApiAlza.Controllers
         {
             return await _context.Products.ToListAsync();
         }
+
+        [HttpPatch("{id}/description")]
+        public async Task<IActionResult> UpdateProductDescription(int id, [FromBody] string newDescription)
+        {
+            var product = await _context.Products.FindAsync(id);
+
+            if (product == null)
+            {
+                return NotFound(new { message = $"Product with Id {id} not found." }); // 404 Not Found
+            }
+
+            product.Description = newDescription;
+            await _context.SaveChangesAsync();
+
+            return NoContent();  // 204 No Content
+        }
     }
 }

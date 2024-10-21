@@ -18,5 +18,26 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "EshopApiAlza.Controllers.ProductsController",
+    "Method": "UpdateProductDescription",
+    "RelativePath": "api/Products/{id}/description",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "newDescription",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]
