@@ -3,29 +3,61 @@ using EshopApiAlza.Data;
 using EshopApiAlza.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace EshopApiAlza.Tests.ControllerTests
 {
     public class ProductControllerTests
     {
+        private IConfiguration Configuration;
+        private bool UseMockData { get; set; }
+
         private async Task<AppDbContext> GetDatabaseContext()
         {
-            var options = new DbContextOptionsBuilder<AppDbContext>()
+            Configuration = new ConfigurationBuilder().SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+                .AddJsonFile("appsettings.json", false)
+                .AddEnvironmentVariables()
+                .Build();
+
+            UseMockData = Configuration.GetValue<bool>("UseMockData");
+
+            AppDbContext databaseContext;
+
+            if (UseMockData)
+            {
+                var options = new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
-            var databaseContext = new AppDbContext(options);
-            databaseContext.Database.EnsureCreated();
 
-            if (!await databaseContext.Products.AnyAsync())
-            {
+                databaseContext = new AppDbContext(options);
+                await databaseContext.Database.EnsureCreatedAsync();
+
+                var existingProducts = await databaseContext.Products.ToListAsync();
+                databaseContext.Products.RemoveRange(existingProducts);
+
                 databaseContext.Products.AddRange(
-                   new Product { Id = 1, Name = "Product 1", ImgUri = "https://example.com/img1.jpg", Price = 29.99m, Description = "First product" },
-                   new Product { Id = 2, Name = "Product 2", ImgUri = "https://example.com/img2.jpg", Price = 49.99m, Description = "Second product" },
-                   new Product { Id = 3, Name = "Product 3", ImgUri = "https://example.com/img3.jpg", Price = 19.99m, Description = "Third product" },
-                   new Product { Id = 4, Name = "Product 4", ImgUri = "https://example.com/img4.jpg", Price = 39.99m, Description = "Fourth product" }
-               );
+                    Enumerable.Range(1, 20).Select(i => new Product
+                    {
+                        Id = i,
+                        Name = $"Product {i}",
+                        ImgUri = $"https://example.com/img{i}.jpg",
+                        Price = 20.0m + i,
+                        Description = $"Product {i} description"
+                    })
+                        );
                 await databaseContext.SaveChangesAsync();
             }
+            else
+            {
+                var options = new DbContextOptionsBuilder<AppDbContext>()
+                .UseSqlServer(Configuration.GetValue<string>("ConnectionString"))
+                .Options;
+
+                databaseContext = new AppDbContext(options);
+                await databaseContext.Database.EnsureCreatedAsync();
+            }
+
+
             return databaseContext;
         }
 
