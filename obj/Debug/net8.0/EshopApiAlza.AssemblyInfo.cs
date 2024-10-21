@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EshopApiAlza")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b681f31df12bb1e40b4e1ff867876a1ea9ea62d8")]
 [assembly: System.Reflection.AssemblyProductAttribute("EshopApiAlza")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EshopApiAlza")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
