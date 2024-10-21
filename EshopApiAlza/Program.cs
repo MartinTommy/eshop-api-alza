@@ -20,6 +20,20 @@ namespace EshopApiAlza
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
+
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Eshop API v1",
+                    Description = "Basic Product API"
+                });
+
+                c.SwaggerDoc("v2", new OpenApiInfo
+                {
+                    Version = "v2",
+                    Title = "Eshop API v2",
+                    Description = "Product API with pagination"
+                });
             });
 
             // Add DbContext
@@ -32,7 +46,11 @@ namespace EshopApiAlza
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Eshop API V1");
+                    c.SwaggerEndpoint("/swagger/v2/swagger.json", "Eshop API V2");
+                });
             }
 
             app.UseHttpsRedirection();

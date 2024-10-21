@@ -5,8 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EshopApiAlza.Controllers
 {
-    [Route("api/v2/[controller]")]
     [ApiController]
+    [Route("api/v2/[controller]")]
+    [ApiExplorerSettings(GroupName = "v2")]
     public class ProductsV2Controller : ControllerBase
     {
         private readonly AppDbContext _context;
