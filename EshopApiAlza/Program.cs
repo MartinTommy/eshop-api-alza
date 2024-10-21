@@ -13,8 +13,7 @@ namespace EshopApiAlza
 
             // Add services to the container.
             builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
-            
+            builder.Services.AddEndpointsApiExplorer(); 
             builder.Services.AddSwaggerGen(c =>
             {
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -52,12 +51,8 @@ namespace EshopApiAlza
                     c.SwaggerEndpoint("/swagger/v2/swagger.json", "Eshop API V2");
                 });
             }
-
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
 
             app.Run();

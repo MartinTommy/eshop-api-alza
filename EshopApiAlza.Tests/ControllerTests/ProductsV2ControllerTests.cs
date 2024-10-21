@@ -63,6 +63,7 @@ namespace EshopApiAlza.Tests.ControllerTests
                 databaseContext = new AppDbContext(options);
                 await databaseContext.Database.EnsureCreatedAsync();
             }
+
             return databaseContext;
         }
 

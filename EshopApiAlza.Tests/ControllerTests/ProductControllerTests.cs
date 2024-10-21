@@ -64,7 +64,6 @@ namespace EshopApiAlza.Tests.ControllerTests
                 await databaseContext.Database.EnsureCreatedAsync();
             }
 
-
             return databaseContext;
         }
 
@@ -115,8 +114,6 @@ namespace EshopApiAlza.Tests.ControllerTests
             var actionResult = Assert.IsType<ActionResult<Product>>(result);
             var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var product = Assert.IsType<Product>(okResult.Value);
-
-            // Verify the returned product
             Assert.Equal(1, product.Id);
             Assert.Equal("Product 1", product.Name);
         }
@@ -134,7 +131,6 @@ namespace EshopApiAlza.Tests.ControllerTests
             // Assert
             var actionResult = Assert.IsType<ActionResult<Product>>(result);
             var notFoundResult = Assert.IsType<NotFoundObjectResult>(actionResult.Result);
-
         }
     }
 }
