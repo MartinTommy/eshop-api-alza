@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using EshopApi.Models;
+using EshopApiAlza.Models;
 
-namespace EshopApi.Data
+namespace EshopApiAlza.Data
 {
     public class AppDbContext : DbContext
     {

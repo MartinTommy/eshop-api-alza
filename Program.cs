@@ -1,4 +1,4 @@
-using EshopApi.Data;
+using EshopApiAlza.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace EshopApiAlza
