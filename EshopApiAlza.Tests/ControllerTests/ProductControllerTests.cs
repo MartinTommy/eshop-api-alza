@@ -59,6 +59,41 @@ namespace EshopApiAlza.Tests.ControllerTests
             // Assert
             Assert.IsType<NotFoundObjectResult>(result);
         }
+
+        [Fact]
+        public async Task GetProductById_ProductExists_ReturnsOkWithProduct()
+        {
+            // Arrange
+            var dbContext = await GetDatabaseContext();
+            var controller = new ProductsController(dbContext);
+
+            // Act
+            var result = await controller.GetProductById(1);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<Product>>(result);
+            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var product = Assert.IsType<Product>(okResult.Value);
+
+            // Verify the returned product
+            Assert.Equal(1, product.Id);
+            Assert.Equal("Product 1", product.Name);
+        }
+
+        [Fact]
+        public async Task GetProductById_ProductDoesNotExist_ReturnsNotFound()
+        {
+            // Arrange
+            var dbContext = await GetDatabaseContext();
+            var controller = new ProductsController(dbContext);
+
+            // Act
+            var result = await controller.GetProductById(999);  // Non-existent product ID
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<Product>>(result);
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(actionResult.Result);
+
+        }
     }
 }
-
