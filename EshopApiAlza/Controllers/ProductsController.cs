@@ -37,5 +37,18 @@ namespace EshopApiAlza.Controllers
 
             return NoContent();  // 204 No Content
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Product>> GetProductById(int id)
+        {
+            var product = await _context.Products.FindAsync(id);
+
+            if (product == null)
+            {
+                return NotFound(new { message = $"Product with Id {id} not found." });
+            }
+
+            return Ok(product);
+        }
     }
 }
