@@ -82,7 +82,9 @@ namespace EshopApiAlza.Tests.ControllerTests
             Assert.IsType<NoContentResult>(result);
 
             var updatedProduct = await dbContext.Products.FindAsync(1);
-            Assert.Equal("New Description", updatedProduct.Description);
+
+            Assert.NotNull(updatedProduct);
+            Assert.Equal("New Description", updatedProduct!.Description);
         }
 
         [Fact]
