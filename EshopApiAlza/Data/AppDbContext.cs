@@ -22,5 +22,10 @@ namespace EshopApiAlza.Data
                     new Product { Id = 6, Name = "Product 6", ImgUri = "https://example.com/img6.jpg", Price = 129.99m, Description = "Sixth product description" }
             );
         }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+        }
     }
 }
