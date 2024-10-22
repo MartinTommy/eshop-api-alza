@@ -32,7 +32,7 @@ Before running the project, make sure you have the following installed on your s
    Use the following command to clone the repository from GitHub:
 
    ```bash
-   git clone https://github.com/your-username/eshop-api-alza.git
+   git clone https://github.com/MartinTommy/eshop-api-alza.git
    ```
 
 2. **Set Up the Database**  
@@ -63,16 +63,6 @@ Before running the project, make sure you have the following installed on your s
 
    If you're using SQL Server with Docker, use the appropriate connection string (e.g., using localhost with the Docker port or using SQL Server authentication).
 
-4. **Apply Database Migrations**  
-   Run the following commands in the Package Manager Console or Terminal to apply migrations and seed the database:
-
-   ```bash
-   # Apply migrations
-   dotnet ef database update
-   ```
-
-   This will create the necessary database schema and seed initial product data.
-
 ## Running the Application
 
 ### Using Visual Studio
@@ -81,35 +71,17 @@ Before running the project, make sure you have the following installed on your s
 2. Select `EshopApiAlza` as the startup project.
 3. Press `F5` to run the application.
 
-### Using Command Line
-
-Alternatively, you can run the application from the command line:
-
-1. Navigate to the project directory:
-
-   ```bash
-   cd EshopApiAlza
-   ```
-
-2. Run the application:
-
-   ```bash
-   dotnet run
-   ```
-
 Once the app is running, you can access the Swagger documentation at:
 
 ```
 http://localhost:<port>/swagger
 ```
 
+First run of the `EshopApiAlza` profile will automatically start the initial database migration. This will add Products table into the EshopDbAlza database and seed initial data.
+
 ## API Documentation
 
-The API documentation is automatically generated using Swagger. You can explore the API, test endpoints, and see the request/response models at:
-
-```
-http://localhost:<port>/swagger
-```
+The API documentation is automatically generated using Swagger. 
 
 ## Versioning
 
@@ -128,26 +100,21 @@ Unit tests are implemented using xUnit and EF Core InMemory to mock the database
 2. Go to the Test Explorer window.
 3. Click `Run All` to execute the tests.
 
-### Run Unit Tests from the Command Line
+### Unit Test configuration
 
-1. Navigate to the test project directory:
+In the `appsettings.json` file, update the `ConnectionStrings` to match your SQL Server instance. Use the `UseMockData` configuration value to switch between mock data and DB data.
 
-   ```bash
-   cd EshopApiAlza.Tests
-   ```
-
-2. Run the tests:
-
-   ```bash
-   dotnet test
-   ```
-
-   You should see the test results in the console.
+```json
+{
+  "ConnectionString": "Server=localhost;Database=EshopDbAlza;Trusted_Connection=True;TrustServerCertificate=true;",
+  "UseMockData": true
+}
+```
 
 ## Project Structure
 
 ```plaintext
-EshopApi/
+EshopApiAlza/
 ├── Controllers/
 │   ├── ProductsController.cs   # Version 1 API
 │   ├── ProductsV2Controller.cs   # Version 2 API with pagination
