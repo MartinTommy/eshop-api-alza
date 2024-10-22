@@ -51,7 +51,7 @@ namespace EshopApiAlza.Tests.ControllerTests
                         Price = 20.0m + i,
                         Description = $"Product {i} description"
                     })
-                        );
+                );
                 await databaseContext.SaveChangesAsync();
             }
             else
@@ -81,7 +81,6 @@ namespace EshopApiAlza.Tests.ControllerTests
             Assert.IsType<NoContentResult>(result);
 
             var updatedProduct = await dbContext.Products.FindAsync(1);
-
             Assert.NotNull(updatedProduct);
             Assert.Equal("New Description", updatedProduct!.Description);
         }
@@ -130,6 +129,43 @@ namespace EshopApiAlza.Tests.ControllerTests
 
             // Assert
             var actionResult = Assert.IsType<ActionResult<Product>>(result);
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(actionResult.Result);
+        }
+
+        [Theory]
+        [InlineData(1,1)]
+        [InlineData(1,5)]
+        [InlineData(1,100)]
+        public async Task GetProducts_v2_WithPagination_ReturnsCorrectPage(int a, int b)
+        {
+            // Arrange
+            var dbContext = await GetDatabaseContext();
+            var controller = new ProductsV2Controller(dbContext);
+
+            // Act
+            var result = await controller.GetProducts(page: a, size: b);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<PaginatedResponse<Product>>>(result);
+            var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var response = Assert.IsType<PaginatedResponse<Product>>(okResult.Value);
+
+            Assert.Equal(a, response.CurrentPage);    
+            Assert.Equal(b, response.PageSize);       
+        }
+
+        [Fact]
+        public async Task GetProducts_v2_PageExceedsTotal_ReturnsNotFound()
+        {
+            // Arrange
+            var dbContext = await GetDatabaseContext();
+            var controller = new ProductsV2Controller(dbContext);
+
+            // Act
+            var result = await controller.GetProducts(page: 100, size: 1000);
+
+            // Assert
+            var actionResult = Assert.IsType<ActionResult<PaginatedResponse<Product>>>(result);
             var notFoundResult = Assert.IsType<NotFoundObjectResult>(actionResult.Result);
         }
     }
