@@ -1,15 +1,7 @@
 ﻿{
   "$schema": "http://json.schemastore.org/launchsettings.json",
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:21073",
-      "sslPort": 44361
-    }
-  },
   "profiles": {
-    "EshopApi": {
+    "EshopApiAlza": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
