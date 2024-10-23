@@ -41,7 +41,7 @@ namespace EshopApiAlza
 
             var app = builder.Build();
 
-            //Initial Db Migration (in case more migrations are needed - could be isolated into separate launch profile)
+            //Initial Db Migration
             using (var scope = app.Services.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
