@@ -43,7 +43,7 @@ Before running the project, make sure you have the following installed on your s
    CREATE DATABASE EshopDbAlza;
    ```
 
-3. **Update `appsettings.json`**  
+3. **Update `appsettings.json`** 
    In the `appsettings.json` file, update the `ConnectionStrings` to match your SQL Server instance:
 
    ```json
@@ -61,7 +61,7 @@ Before running the project, make sure you have the following installed on your s
    }
    ```
 
-   If you're using SQL Server with Docker, use the appropriate connection string (e.g., using localhost with the Docker port or using SQL Server authentication).
+   If you're using SQL Server on localhost with database "EshopDbAlza", the connection string should be set up correctly by default.
 
 ## Running the Application
 
@@ -115,16 +115,19 @@ In the `appsettings.json` file, update the `ConnectionStrings` to match your SQL
 
 ```plaintext
 EshopApiAlza/
-├── Controllers/
-│   ├── ProductsController.cs   # Version 1 API
-│   ├── ProductsV2Controller.cs   # Version 2 API with pagination
-├── Data/
-│   └── AppDbContext.cs           # EF Core DbContext for SQL Server
-├── Models/
-│   ├── Product.cs                # Product model
-│   └── PaginatedResponse.cs      # Pagination model for v2
-├── appsettings.json              # Configuration file (Connection Strings, etc.)
-└── Program.cs                    # Main entry point for configuring services (Swagger, DbContext, etc.)
+├── Application/
+│   ├── Commands/                # Handles business logic for creating, updating, and deleting data
+│   ├── Queries/                 # Handles business logic for retrieving data
+│   └── Responses/               # Models for formatting responses
+├── Domain/
+│   └── Models/                  # Domain models (e.g., Product)
+├── Infrastructure/
+│   ├── Data/                    # Database context and access classes
+│   └── Migrations/              # Entity Framework migrations
+├── Presentation/
+│   ├── Controllers/             # API Controllers (e.g., ProductsController for V1 and V2)
+│   ├── Program.cs               # Main entry point, configures services (e.g., Swagger, DbContext)
+│   └── appsettings.json         # Configuration file (Connection strings, etc.)
 ```
 
 ## Troubleshooting
