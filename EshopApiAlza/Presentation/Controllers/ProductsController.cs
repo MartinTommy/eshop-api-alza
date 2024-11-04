@@ -1,20 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using EshopApiAlza.Models;
-using EshopApiAlza.Data;
-using Microsoft.EntityFrameworkCore;
+using EshopApiAlza.Domain.Models;
+using MediatR;
+using EshopApiAlza.Application.Queries;
+using EshopApiAlza.Application.Commands;
 
-namespace EshopApiAlza.Controllers
+namespace EshopApiAlza.Presentation.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
     [ApiExplorerSettings(GroupName = "v1")]
     public class ProductsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IMediator _mediator;
 
-        public ProductsController(AppDbContext context)
+        public ProductsController(IMediator mediator)
         {
-            _context = context;
+            _mediator = mediator;
         }
 
         // GET: api/products 
@@ -27,7 +28,8 @@ namespace EshopApiAlza.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            return await _context.Products.ToListAsync();
+            var products = await _mediator.Send(new GetAllProductsQuery());
+            return Ok(products);
         }
 
         // PATCH: api/products/{id}/description
@@ -41,17 +43,8 @@ namespace EshopApiAlza.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateProductDescription(int id, [FromBody] string newDescription)
         {
-            var product = await _context.Products.FindAsync(id);
-
-            if (product == null)
-            {
-                return NotFound(new { message = $"Product with Id {id} not found." }); // 404 Not Found
-            }
-
-            product.Description = newDescription;
-            await _context.SaveChangesAsync();
-
-            return NoContent();  // 204 No Content
+            var result = await _mediator.Send(new UpdateProductDescriptionCommand(id, newDescription));
+            return result ? NoContent() : NotFound();
         }
 
         // GET: api/products/{id}
@@ -65,7 +58,8 @@ namespace EshopApiAlza.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+ 
+            var product = await _mediator.Send(new GetProductByIdQuery(id));
 
             if (product == null)
             {
@@ -73,6 +67,7 @@ namespace EshopApiAlza.Controllers
             }
 
             return Ok(product);
+            
         }
     }
 }

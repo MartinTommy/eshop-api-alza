@@ -1,9 +1,10 @@
-using EshopApiAlza.Data;
+using EshopApiAlza.Application.Queries;
+using EshopApiAlza.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 
-namespace EshopApiAlza
+namespace EshopApiAlza.Presentation
 {
     public class Program
     {
@@ -11,9 +12,15 @@ namespace EshopApiAlza
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Explicitly add appsettings.json to the configuration pipeline
+            builder.Configuration
+            .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "Presentation")) 
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddEnvironmentVariables();
+
             // Add services to the container.
             builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer(); 
+            builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -38,6 +45,9 @@ namespace EshopApiAlza
             // Add DbContext
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            // Register MediatR handlers from the Application layer assemblies
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAllProductsQueryHandler).Assembly));
 
             var app = builder.Build();
 

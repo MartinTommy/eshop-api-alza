@@ -1,4 +1,4 @@
-﻿namespace EshopApiAlza.Models
+﻿namespace EshopApiAlza.Application.Responses
 {
     public class PaginatedResponse<T>
     {

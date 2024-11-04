@@ -1,4 +1,4 @@
-﻿namespace EshopApiAlza.Models
+﻿namespace EshopApiAlza.Domain.Models
 {
     public class Product
     {
